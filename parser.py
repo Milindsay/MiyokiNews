@@ -31,40 +31,73 @@ def parseUrl(url) :
 # ----------------------------------------------------------------------------------------------------------- #
 
 # -------------- RECUPERATION DES INFOS DE LA SERIE EN PARCOURANT LA LISTE LI DU UL "entryInfos" ------------ #
-def recupInfosSerie(listLi) :
+def recupInfosSerie(soup) :
 #{
+    # récupération de la liste des li contenu dans le ul="entryInfos"
+    # find_all retourne une liste de 1 seul car il n'y a qu'un seul "entryInfos" d'où le [0] pour éviter de faire un for sur un seul élément.
+    # on applique à nouveau le find_all sur les balises ('li') pour récupère une liste qui contient tous les li (> 0 élément)
+    listLi = soup.find_all(class_="entryInfos")[0].find_all('li')
+
     # première ligne de la liste qui contient les li (converti en liste)
     # on récupère le deuxième éléments du contenu de ce li sur lequel on enlève certains caractères spéciaux
     titreVO = list(listLi)[0].contents[2].strip(' \t\r\n:')
-    print("Titre VO : " + str(titreVO))
+    print("Titre VO : " + titreVO)
 
     titreTraduit = list(listLi)[1].contents[2].strip(' \t\r\n:')
-    print("Titre traduit :" + str(titreTraduit))
+    print("Titre traduit :" + titreTraduit)
 
     dessinateur = list(listLi)[2].contents[2].string.strip(' \t\r\n:')
-    print("Dessinateur : " + str(dessinateur))
+    print("Dessinateur : " + dessinateur)
 
     scenariste = list(listLi)[3].contents[2].string.strip(' \t\r\n:')
-    print("Scénariste : " + str(scenariste))
+    print("Scénariste : " + scenariste)
 
     editeurVF = list(listLi)[4].contents[2].string.strip(' \t\r\n:')
-    print("Editeur VF : " + str(editeurVF))
+    print("Editeur VF : " + editeurVF)
 
     typeManga = list(listLi)[6].contents[2].string.strip(' \t\r\n:')
-    print("Type : " + str(typeManga))
+    print("Type : " + typeManga)
 
     genres = ""
     for child in list(listLi)[7].find_all('a') :
         genres += child.string.strip(' \t\r\n:') + ", "
-    print("Genre : " + str(genres))
+    print("Genre : " + genres)
 
     editeurVO = list(listLi)[8].contents[2].string.strip(' \t\r\n:')
-    print("Editeur VO : " + str(editeurVO))
+    print("Editeur VO : " + editeurVO)
 
     origine = list(listLi)[11].contents[1].string.strip(' \t\r\n:').replace(' ', '')
-    print("Origine : " + str(origine))
+    print("Origine : " + origine)
 #}
 # ----------------------------------------------------------------------------------------------------------- #
+
+# -------------------------- RECUPERATION DU NOMBRE DE TOME EN FRANCE ET AU JAPON --------------------------- #
+def recupTomesVFVO(soup) :
+#{
+    nbTomesVOVF = soup.find(id="numberblock").find_all("span")
+
+    tomes_vf = list(nbTomesVOVF)[0].contents[2].strip(' \t\r\n:')
+    tomes_vo = list(nbTomesVOVF)[3].contents[1].contents[2].strip(' \t\r\n:')
+
+    print("Tomes VO : " + tomes_vo)
+    print("Tomes VF : " + tomes_vf)
+# }
+# ----------------------------------------------------------------------------------------------------------- #
+    
+# ---------------------------- RECUPERATION DE LA LISTE DES TOMES DE LA SERIE ------------------------------- #
+def recupTomesSerie(soup) : 
+#{
+    volumes = soup.find(id="serieVolumes").find_all(class_="vols")
+
+    print("Volumes : ")
+    for volume in volumes :
+        url_volume = volume.a['href']
+        url_imag = volume.a.img['src']
+        idVolume = volume.find_all(class_='selection')[0].string
+        print(idVolume + " lien : "+ url_volume + " image : " + url_imag)
+# }
+# ----------------------------------------------------------------------------------------------------------- #
+
 
 # ----------------------------- FONCTION QUI PARSE LE CONTENU D'UNE SERIE ----------------------------------- #
 def parseSerie(url) :
@@ -74,12 +107,14 @@ def parseSerie(url) :
     # page html récupérée ci-dessus et mise au format 'beautiful soup'
     soup = BeautifulSoup(html, "html.parser") 
 
-    # récupération de la liste des li contenu dans le ul="entryInfos"
-    # find_all retourne une liste de 1 seul car il n'y a qu'un seul "entryInfos" d'où le [0] pour éviter de faire un for sur un seul élément.
-    # on applique à nouveau le find_all sur les balises ('li') pour récupère une liste qui contient tous les li (> 0 élément)
-    listLi = soup.find_all(class_="entryInfos")[0].find_all('li')
 
-    recupInfosSerie(listLi)
+    recupInfosSerie(soup)
+    recupTomesVFVO(soup)    
+
+    resume = soup.find(id="summary").p.string
+    print("\nRésumé :  \n" + resume + "\n")
+
+    recupTomesSerie(soup)
 #}
 # ----------------------------------------------------------------------------------------------------------- #
 
