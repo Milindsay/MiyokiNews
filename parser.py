@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 import string
 import pprint
+import sqlbase
 
 # ----------------- FONCTION QUI PARSE L'INDEX HTML DE TOUTES LES LETTRES DE L'ALPHABET ET QUI RETOURNE LA LISTE DES SERIES -------------------- #
 def parseUrl(url) :
@@ -73,12 +74,12 @@ def recupTomesSerie(soup) :
     # création d'une liste qui contient pour chaque élément l'url vers le tome, l'url vers l'image et le numéro du tome
     listTomes = []
 
-    # print("Volumes : ")
+    print("Volumes : ")
     for tome in tomes :
         urlTome = tome.a['href']
         urlImag = tome.a.img['src']
         idVolume = tome.find_all(class_='selection')[0].string
-        # print(idVolume + " lien : "+ urlTome + " image : " + urlImag)
+        print(idVolume + " lien : "+ urlTome + " image : " + urlImag)
         listTomes.append([urlTome, urlImag, idVolume])
 
     return listTomes
@@ -198,7 +199,7 @@ def parseSerie(url) :
     
     # for url in urlTomes :
     #     parseTome(url)
-    datePublication, resume, urlImage = parseTome(listTomes[17][0])
+    datePublication, resume, urlImage = parseTome(listTomes[0][0])
     print("Date de publication du tome : " + datePublication)
     print("Résumé du tome : " + resume)
     print("Url de l'image du tome : " + urlImage)
