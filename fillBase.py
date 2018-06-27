@@ -7,7 +7,8 @@ from sqlalchemy.ext.declarative import declarative_base
 import sqlbase
 from sqlbase import Auteur, Genre, Serie, Tome, Asso_SerieGenre, Dessinateur, Type
 
-from parser import  parseUrl
+import getDatas
+from getDatas import parseUrl
 
 # ----------------------------------------------------------------------------------------------------------- #
 #     Main     #
