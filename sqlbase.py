@@ -23,14 +23,14 @@ class Serie(Base):
     children = relationship("Asso_SerieGenre")
 
     #surdéfinition de l'opérateur= pour comparer deux entrées de la table 'Serie'. Retourne true si égale, false sinon.
-    def _eq_(self, other):
+    def __eq__(self, other):
         return type(self)==type(other) and self.titre == other.titre
     #surdéfinition de la fonction toString
-    def _str_(self):
+    def __str__(self):
         return "Serie : " + self.titre + "  Nb VO : " + str(self.nb_VO) + "  Nb VF : " + str(self.nb_VF)
     #autre méthode éventuellement appelé pour représenter une classe en chaine de caractère
-    def _repr_(self):
-        return self._str_()
+    def __repr__(self):
+        return self.__str__()
 
 #Classe Tome - qui représente la table 'Tome'
 class Tome(Base):
@@ -42,14 +42,14 @@ class Tome(Base):
     image_de_couv = Column(Text(1000))
     serie_id      = Column(Integer, ForeignKey('serie.id'))
     #surdéfinition de l'opérateur= pour comparer deux entrées de la table 'Tome'. Retourne true si égale, false sinon.
-    def _eq_(self, other):
+    def __eq__(self, other):
         return type(self)==type(other) and self.serie_id == other.serie_id and self.num == other.num
     #surdéfinition de la fonction toString
-    def _str_(self):
+    def __str__(self):
         return "Tome num : " + self.num + "  date : " + str(self.date)
     #autre méthode éventuellement appelé pour représenter une classe en chaine de caractère
-    def _repr_(self):
-        return self._str_()
+    def __repr__(self):
+        return self.__str__()
 
 #Classe Auteur - qui représente la table 'Auteur'
 class Auteur(Base):
@@ -57,16 +57,16 @@ class Auteur(Base):
     id            = Column(Integer, primary_key=True)
     nom           = Column(String(50))
     #surdéfinition de l'opérateur= pour comparer deux entrées de la table 'Auteur'. Retourne true si égale, false sinon.
-    def _eq_(self, other):
+    def __eq__(self, other):
         return type(self)==type(other) and self.nom == other.nom
     #surdéfinition de la fonction toString
-    def _str_(self):
+    def __str__(self):
         if self.nom:
             return "Nom : "+ self.nom
         return "None"
     #autre méthode éventuellement appelé pour représenter une classe en chaine de caractère
-    def _repr_(self):
-        return self._str_()
+    def __repr__(self):
+        return self.__str__()
 
 #Classe Dessinateur - qui représente la table 'Dessinateur'
 class Dessinateur(Base):
@@ -74,16 +74,16 @@ class Dessinateur(Base):
     id            = Column(Integer, primary_key=True)
     nom           = Column(String(50))
     #surdéfinition de l'opérateur= pour comparer deux entrées de la table 'Dessinateur'. Retourne true si égale, false sinon.
-    def _eq_(self, other):
+    def __eq__(self, other):
         return type(self)==type(other) and self.nom == other.nom
     #surdéfinition de la fonction toString
-    def _str_(self):
+    def __str__(self):
         if self.nom:
             return "Nom : "+ self.nom
         return "None"
     #autre méthode éventuellement appelé pour représenter une classe en chaine de caractère
-    def _repr_(self):
-        return self._str_()
+    def __repr__(self):
+        return self.__str__()
 
 #Classe Type - qui représente la table 'Type'
 class Type(Base):
@@ -91,16 +91,16 @@ class Type(Base):
     id            = Column(Integer, primary_key=True)
     nom           = Column(String(50))
     #surdéfinition de l'opérateur= pour comparer deux entrées de la table 'Type'. Retourne true si égale, false sinon.
-    def _eq_(self, other):
+    def __eq__(self, other):
         return type(self)==type(other) and self.nom == other.nom
     #surdéfinition de la fonction toString
-    def _str_(self):
+    def __str__(self):
         if self.nom:
             return "Nom : "+ self.nom
         return "None"
     #autre méthode éventuellement appelé pour représenter une classe en chaine de caractère
-    def _repr_(self):
-        return self._str_()
+    def __repr__(self):
+        return self.__str__()
 
 #Classe Genre - qui représente la table 'Genre'
 class Genre(Base):
@@ -108,17 +108,17 @@ class Genre(Base):
     id            = Column(Integer, primary_key=True)
     nom           = Column(String(50))
     #surdéfinition de l'opérateur= pour comparer deux entrées de la table 'Genre'. Retourne true si égale, false sinon.
-    def _eq_(self, other):
+    def __eq__(self, other):
         return type(self)==type(other) and self.nom == other.nom
 
     #surdéfinition de la fonction toString
-    def _str_(self):
+    def __str__(self):
         if self.nom:
             return "Nom : "+ self.nom
         return "None"
     #autre méthode éventuellement appelé pour représenter une classe en chaine de caractère
-    def _repr_(self):
-        return self._str_()
+    def __repr__(self):
+        return self.__str__()
 
 #Classe Association_Série-Genre - qui représente la table 'Asso-SérieGenre'
 class Asso_SerieGenre(Base):

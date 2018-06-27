@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import urllib.request
 import string
 import pprint
-import sqlbase
 
 # ----------------- FONCTION QUI PARSE L'INDEX HTML DE TOUTES LES LETTRES DE L'ALPHABET ET QUI RETOURNE LA LISTE DES SERIES -------------------- #
 def parseUrl(url) :
@@ -213,26 +212,26 @@ def parseSerie(url) :
 #     Main     #
 
 # url principale
-indexSerie = 'https://www.manga-news.com/index.php/series/'
-bibliotheque = {}
+# indexSerie = 'https://www.manga-news.com/index.php/series/'
+# bibliotheque = {}
 
-bibliotheque.update(parseUrl('https://www.manga-news.com/index.php/series/' + 'A'))
+# bibliotheque.update(parseUrl('https://www.manga-news.com/index.php/series/' + 'A'))
 
-# récupère une clé de la bibliothèque
-# transforme le type retourné par bibliotheque.keys() en type 'List'
-key = list(bibliotheque.keys())[0]
+# # récupère une clé de la bibliothèque
+# # transforme le type retourné par bibliotheque.keys() en type 'List'
+# key = list(bibliotheque.keys())[0]
 
-# récupération de la liste des séries
-parseSerie(key)
+# # récupération de la liste des séries
+# parseSerie(key)
 
-exit(0)
+# exit(0)
 
-# génération des url vers chaque lettre de l'alphabet
-alphabet = list(string.ascii_uppercase) + [' ']
-for letter in alphabet :
-    # print(letter)
-    urlSerie = indexSerie + letter
-    # print(urlSerie)
-    bibliotheque.update(parseUrl(urlSerie))
+# # génération des url vers chaque lettre de l'alphabet
+# alphabet = list(string.ascii_uppercase) + [' ']
+# for letter in alphabet :
+#     # print(letter)
+#     urlSerie = indexSerie + letter
+#     # print(urlSerie)
+#     bibliotheque.update(parseUrl(urlSerie))
 
 # ----------------------------------------------------------------------------------------------------------- #

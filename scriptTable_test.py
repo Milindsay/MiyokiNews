@@ -111,6 +111,8 @@ asso2 = Asso_SerieGenre()
 asso2.serie_id = s.id
 asso2.genre_id = g2.id
 session.add(asso2)
+#tout envoyer sur la bdd
+session.commit() 
 
-
-session.commit()
+series = session.query(Serie).all()
+print(series)
