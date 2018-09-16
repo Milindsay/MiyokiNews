@@ -33,11 +33,12 @@ def parseUrl(url) :
 
 # ----------------------------- FONCTION QUI PARSE LE CONTENU D'UN TOME ------------------------------------- #
 # -------------- RECUPERATION DES INFOS D'UN TOME EN PARCOURANT LA LISTE LI DU UL "entryInfos" ------------ #
-def parseTome(url_tomes) :
+def parseTome(url_tome) :
 #{
     # récupération du code source de la page html
-    html = urllib.request.urlopen(url_tomes).read()
+    html = urllib.request.urlopen(url_tome).read()
     # page html récupérée ci-dessus et mise au format 'beautiful soup'
+    # 'soup' contient tout le contenu html de la page.
     soup = BeautifulSoup(html, "html5lib")
 
     # récupération de la liste des li contenu dans le ul="entryInfos"
@@ -45,7 +46,19 @@ def parseTome(url_tomes) :
     # on applique à nouveau le find_all sur les balises ('li') pour récupère une liste qui contient tous les li (> 0 élément)
     listLi = soup.find_all(class_="entryInfos")[0].find_all('li')
 
-    datePublication = list(listLi)[10].meta['content']
+    # on parcourt chaque li du tableau listLi récupéré ci-dessus que l'on a converti en type 'list' de pyhton
+    # pour avoir un tableau mis sous forme de []
+    for li in list(listLi) :
+        # on récupère tous les enfants de type balise "<strong>" de chaque li. On enlève le récursive car il n'y a qu'un seul <strong> dans le li.
+        childrens = li.findChildren('strong', recursive=False)
+        # on transforme la liste 'childrens' en tableau [] python
+        # on test chaque 1er élément de la liste "childrens" car dans ce cas là, findChildren retourne une liste qui a un seul élément dans chaque ligne ex:[<strong>]. S'il y avait eu plusieurs balises strong dans un li, on aurait eu [ <strong>, <strong>, <strong>] 
+        # et chaque 1er élement de la liste 'contents' car 'contents' retourne une liste du contenu présent dans la balise strong (dans notre cas) et il n'y a qu'un seul contenu dans la balise strong.
+        # si la valeur de contents == "Date de publication" 
+        if(list(childrens)[0].contents[0] == "Date de publication") :
+            # alors on récupère la valeur de l'attribut 'content' présent dans la balise <meta>
+            datePublication = li.meta['content']
+
     # print("\nDate de publication : " + datePublication)
 
     # récupération du résumé
@@ -212,19 +225,19 @@ def parseSerie(url) :
 #     Main     #
 
 # url principale
-# indexSerie = 'https://www.manga-news.com/index.php/series/'
-# bibliotheque = {}
+indexSerie = 'https://www.manga-news.com/index.php/series/'
+bibliotheque = {}
 
-# bibliotheque.update(parseUrl('https://www.manga-news.com/index.php/series/' + 'A'))
+bibliotheque.update(parseUrl('https://www.manga-news.com/index.php/series/' + 'A'))
 
 # # récupère une clé de la bibliothèque
 # # transforme le type retourné par bibliotheque.keys() en type 'List'
-# key = list(bibliotheque.keys())[0]
+key = list(bibliotheque.keys())[0]
 
 # # récupération de la liste des séries
-# parseSerie(key)
+parseSerie(key)
 
-# exit(0)
+exit(0)
 
 # # génération des url vers chaque lettre de l'alphabet
 # alphabet = list(string.ascii_uppercase) + [' ']
